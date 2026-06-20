@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAESTRO ASIA LDG Series - Flow Meter Selection Tool</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --bg: #f4f7f6;
+            --card: #ffffff;
+            --text: #333333;
+            --light-gray: #f8f9fa;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0 0 5px 0;
+            font-size: 32px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        .card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid #eef2f5;
+            padding-bottom: 12px;
+            font-size: 22px;
+        }
+        .card h3 {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-size: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        .input-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #555;
+        }
+        .label-small {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            font-weight: normal;
+            margin-bottom: 4px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background-color: #003d82;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            width: 100%;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .recommendation-item {
+            background: #f0f7ff;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .recommendation-item.recommended {
+            background: #f0fff4;
+            border-color: var(--success);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+        }
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .recommendation-header h4 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-success {
+            background-color: var(--success);
+            color: white;
+        }
+        .badge-warning {
+            background-color: var(--warning);
+            color: #333;
+        }
+        .badge-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        .tech-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        .tech-spec {
+            background: white;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary);
+        }
+        .tech-spec-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .tech-spec-value {
+            color: #333;
+        }
+        .compatibility {
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #8bc34a;
+        }
+        .compatibility-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+        .compatibility-item:last-child {
+            margin-bottom: 0;
+        }
+        .compatibility-icon {
+            margin-right: 6px;
+            font-weight: bold;
+        }
+        .compatibility-icon.ok {
+            color: var(--success);
+        }
+        .compatibility-icon.warning {
+            color: var(--warning);
+        }
+        .compatibility-icon.error {
+            color: var(--danger);
+        }
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #888;
+        }
+        .no-results-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 12px;
+            color: #aaa;
+            font-weight: bold;
+        }
+        .results-info {
+            background: #e3f2fd;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #01579b;
+        }
+        .model-comparison {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>⚡ MAESTRO ASIA LDG Series</h1>
+        <p>Intelligent Flow Meter Selection Tool</p>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- LEFT PANEL: INPUT REQUIREMENTS -->
+        <div class="card">
+            <h2>📋 Application Requirements</h2>
+
+            <h3>Application Details</h3>
+            <div class="input-group">
+                <label for="appName">Application Name</label>
+                <span class="label-small">e.g., Water Treatment, Cooling System, Chemical Dosing</span>
+                <input type="text" id="appName" placeholder="Enter application description">
+            </div>
+
+            <div class="input-group">
+                <label for="appType">Application Type</label>
+                <select id="appType" onchange="updateRecommendations()">
+                    <option value="">-- Select --</option>
+                    <option value="water">Water Supply/Distribution</option>
+                    <option value="wastewater">Wastewater Treatment</option>
+                    <option value="cooling">Cooling Water Systems</option>
+                    <option value="chemical">Chemical Processing</option>
+                    <option value="food">Food & Beverage</option>
+                    <option value="pharma">Pharmaceutical</option>
+                    <option value="mining">Mining/Minerals</option>
+                    <option value="oil">Oil & Gas</option>
+                    <option value="other">Other Industrial</option>
+                </select>
+            </div>
+
+            <h3>Pipe Configuration</h3>
+            <div class="input-group">
+                <label for="pipeSize">Pipe Diameter (mm)</label>
+                <span class="label-small">Required: Choose from MAESTRO standard sizes</span>
+                <select id="pipeSize" onchange="updateRecommendations()">
+                    <option value="">-- Select Diameter --</option>
+                    <option value="10">10 mm (DN10)</option>
+                    <option value="15">15 mm (DN15)</option>
+                    <option value="20">20 mm (DN20)</option>
+                    <option value="25">25 mm (DN25)</option>
+                    <option value="32">32 mm (DN32)</option>
+                    <option value="40">40 mm (DN40)</option>
+                    <option value="50">50 mm (DN50)</option>
+                    <option value="65">65 mm (DN65)</option>
+                    <option value="80">80 mm (DN80)</option>
+                    <option value="100">100 mm (DN100)</option>
+                    <option value="125">125 mm (DN125)</option>
+                    <option value="150">150 mm (DN150)</option>
+                    <option value="200">200 mm (DN200)</option>
+                    <option value="250">250 mm (DN250)</option>
+                    <option value="300">300 mm (DN300)</option>
+                </select>
+            </div>
+
+            <h3>Flow Rate Requirements</h3>
+            <div class="row">
+                <div class="input-group">
+                    <label for="flowMin">Min Flow (L/min)</label>
+                    <input type="number" id="flowMin" value="10" step="1" oninput="updateRecommendations()">
+                </div>
+                <div class="input-group">
+                    <label for="flowNormal">Normal (L/min)</label>
+                    <input type="number" id="flowNormal" value="100" step="1" oninput="updateRecommendations()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label for="flowMax">Max Flow (L/min)</label>
+                    <input type="number" id="flowMax" value="200" step="1" oninput="updateRecommendations()">
+                </div>
+            </div>
+
+            <h3>Environmental Conditions</h3>
+            <div class="row">
+                <div class="input-group">
+                    <label for="tempMin">Min Temperature (°C)</label>
+                    <input type="number" id="tempMin" value="0" step="1" oninput="updateRecommendations()">
+                </div>
+                <div class="input-group">
+                    <label for="tempMax">Max Temperature (°C)</label>
+                    <input type="number" id="tempMax" value="50" step="1" oninput="updateRecommendations()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-group">
+                    <label for="pressureMin">Min Pressure (bar)</label>
+                    <input type="number" id="pressureMin" value="0" step="0.1" oninput="updateRecommendations()">
+                </div>
+                <div class="input-group">
+                    <label for="pressureMax">Max Pressure (bar)</label>
+                    <input type="number" id="pressureMax" value="10" step="0.1" oninput="updateRecommendations()">
+                </div>
+            </div>
+
+            <h3>Fluid Properties</h3>
+            <div class="input-group">
+                <label for="fluidType">Process Fluid</label>
+                <select id="fluidType" onchange="updateFluidInfo()">
+                    <option value="water">Clean Water</option>
+                    <option value="seawater">Seawater</option>
+                    <option value="wastewater">Wastewater</option>
+                    <option value="glycol">Glycol/Antifreeze</option>
+                    <option value="milk">Milk/Dairy</option>
+                    <option value="food">Food Product</option>
+                    <option value="chemical">Chemical Solution</option>
+                    <option value="slurry">Slurry/Suspension</option>
+                    <option value="custom">Custom Fluid</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="conductivity">Fluid Conductivity (µS/cm)</label>
+                <span class="label-small">MAESTRO minimum requirement: 5 µS/cm</span>
+                <input type="number" id="conductivity" value="1000" step="1" oninput="updateRecommendations()">
+            </div>
+
+            <h3>Accuracy & Display</h3>
+            <div class="input-group">
+                <label for="requiredAccuracy">Required Accuracy (%)</label>
+                <input type="number" id="requiredAccuracy" value="2.0" step="0.1" oninput="updateRecommendations()">
+            </div>
+
+            <div class="input-group">
+                <label for="displayType">Display/Output Type</label>
+                <select id="displayType" onchange="updateRecommendations()">
+                    <option value="any">Any (No Preference)</option>
+                    <option value="local">Local Display on Meter</option>
+                    <option value="remote">Remote Reading</option>
+                    <option value="signal">Signal Output (4-20mA/Pulse)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="electrode">Preferred Electrode Material</label>
+                <select id="electrode" onchange="updateRecommendations()">
+                    <option value="any">Any Material</option>
+                    <option value="ss316l">Stainless Steel 316L</option>
+                    <option value="tantalum">Tantalum (Corrosive Fluids)</option>
+                    <option value="hastelloy">Hastelloy (High Corrosion)</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" onclick="updateRecommendations()">🔍 Find Best Match</button>
+            <button class="btn btn-secondary" onclick="resetForm()">↻ Reset All</button>
+        </div>
+
+        <!-- RIGHT PANEL: RECOMMENDATIONS -->
+        <div class="card">
+            <h2>✓ Recommended Meters</h2>
+
+            <div id="recommendationsContainer">
+                <div class="no-results">
+                    <div class="no-results-icon">📊</div>
+                    <p><strong>Enter requirements and click "Find Best Match"</strong> to see recommendations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DETAILED COMPARISON TABLE -->
+    <div class="card">
+        <h2>📑 Complete Product Specifications</h2>
+        <div class="model-comparison">
+            <table id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Type</th>
+                        <th>Display</th>
+                        <th>Diameter Range</th>
+                        <th>Velocity Range</th>
+                        <th>Accuracy</th>
+                        <th>Temperature</th>
+                        <th>Key Features</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// MAESTRO ASIA LDG Product Database
+const maestroDatabase = {
+    'ldg-b': {
+        name: 'LDG-B',
+        type: 'Standard Compact',
+        description: 'Compact type with remote converter',
+        display: 'Remote Type',
+        accuracy: 0.5,
+        repeatability: 0.1,
+        velocityMin: 0.3,
+        velocityMax: 10,
+        tempMin: -20,
+        tempMax: 60,
+        tempSpecial: 90,
+        minConductivity: 5,
+        electrodes: ['SS316L', 'Tantalum', 'Hastelloy'],
+        output: ['4-20mA', 'Pulse', 'Modbus'],
+        pressure: 16,
+        features: ['Compact design', 'Remote reading', 'Low power consumption', 'No moving parts'],
+        suitable: true
+    },
+    'ldg-y': {
+        name: 'LDG-Y',
+        type: 'With Local Display',
+        description: 'Compact with integrated local display',
+        display: 'Local Display on Meter',
+        accuracy: 0.5,
+        repeatability: 0.1,
+        velocityMin: 0.3,
+        velocityMax: 10,
+        tempMin: -20,
+        tempMax: 60,
+        tempSpecial: 90,
+        minConductivity: 5,
+        electrodes: ['SS316L', 'Tantalum', 'Hastelloy'],
+        output: ['4-20mA', 'Pulse', 'Modbus', 'Display'],
+        pressure: 16,
+        features: ['Local display', 'Real-time readings', 'Data logging', 'IP68 protected'],
+        suitable: true
+    },
+    'ldg-f': {
+        name: 'LDG-F',
+        type: 'Compact with Local Display',
+        description: 'Compact flange type with integrated display',
+        display: 'Local Display on Meter',
+        accuracy: 0.5,
+        repeatability: 0.1,
+        velocityMin: 0.3,
+        velocityMax: 10,
+        tempMin: -20,
+        tempMax: 60,
+        tempSpecial: 90,
+        minConductivity: 5,
+        electrodes: ['SS316L', 'Tantalum', 'Hastelloy'],
+        output: ['4-20mA', 'Pulse', 'Modbus', 'Display'],
+        pressure: 16,
+        features: ['Flange mounting', 'Integrated display', 'Compact size', 'Easy installation'],
+        suitable: true
+    },
+    'ldg-a': {
+        name: 'LDG-A',
+        type: 'Remote Type',
+        description: 'Remote converter with separate display/controller',
+        display: 'Remote Type (Separate Controller)',
+        accuracy: 0.5,
+        repeatability: 0.1,
+        velocityMin: 0.3,
+        velocityMax: 10,
+        tempMin: -20,
+        tempMax: 60,
+        tempSpecial: 90,
+        minConductivity: 5,
+        electrodes: ['SS316L', 'Tantalum', 'Hastelloy'],
+        output: ['4-20mA', 'Pulse', 'Modbus', 'RS485'],
+        pressure: 16,
+        features: ['Remote converter', 'Flexible placement', 'Multiple outputs', 'Advanced diagnostics'],
+        suitable: true
+    }
+};
+
+// Flow ranges for each pipe size (based on 0.3-10 m/s velocity range)
+const flowRanges = {
+    10: { minFlow: 0.141, maxFlow: 4.71 },
+    15: { minFlow: 0.318, maxFlow: 10.6 },
+    20: { minFlow: 0.565, maxFlow: 18.8 },
+    25: { minFlow: 0.884, maxFlow: 29.5 },
+    32: { minFlow: 1.44, maxFlow: 48.1 },
+    40: { minFlow: 2.26, maxFlow: 75.4 },
+    50: { minFlow: 3.53, maxFlow: 117.8 },
+    65: { minFlow: 5.99, maxFlow: 199.6 },
+    80: { minFlow: 9.05, maxFlow: 302 },
+    100: { minFlow: 14.14, maxFlow: 471.2 },
+    125: { minFlow: 22.09, maxFlow: 736.4 },
+    150: { minFlow: 31.81, maxFlow: 1060.9 },
+    200: { minFlow: 56.55, maxFlow: 1884.0 },
+    250: { minFlow: 88.36, maxFlow: 2945 },
+    300: { minFlow: 127.23, maxFlow: 4242 }
+};
+
+// Fluid conductivity database
+const fluidDatabase = {
+    'water': { conductivity: 1000, suitable: true },
+    'seawater': { conductivity: 50000, suitable: true },
+    'wastewater': { conductivity: 2000, suitable: true },
+    'glycol': { conductivity: 500, suitable: true },
+    'milk': { conductivity: 5000, suitable: true },
+    'food': { conductivity: 2000, suitable: true },
+    'chemical': { conductivity: 3000, suitable: true },
+    'slurry': { conductivity: 1500, suitable: true },
+    'custom': { conductivity: 1000, suitable: true }
+};
+
+function updateFluidInfo() {
+    const fluidType = document.getElementById('fluidType').value;
+    if (fluidDatabase[fluidType]) {
+        document.getElementById('conductivity').value = fluidDatabase[fluidType].conductivity;
+    }
+    updateRecommendations();
+}
+
+function updateRecommendations() {
+    const pipeSize = document.getElementById('pipeSize').value;
+    const flowMin = parseFloat(document.getElementById('flowMin').value) || 0;
+    const flowNormal = parseFloat(document.getElementById('flowNormal').value) || 0;
+    const flowMax = parseFloat(document.getElementById('flowMax').value) || 0;
+    const tempMin = parseFloat(document.getElementById('tempMin').value) || 0;
+    const tempMax = parseFloat(document.getElementById('tempMax').value) || 50;
+    const conductivity = parseFloat(document.getElementById('conductivity').value) || 0;
+    const requiredAccuracy = parseFloat(document.getElementById('requiredAccuracy').value) || 2.0;
+    const displayType = document.getElementById('displayType').value;
+    const electrode = document.getElementById('electrode').value;
+
+    if (!pipeSize) {
+        document.getElementById('recommendationsContainer').innerHTML = `
+            <div class="no-results">
+                <div class="no-results-icon">⚠️</div>
+                <p><strong>Pipe diameter is required</strong> to find suitable meters</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Validate conductivity
+    if (conductivity < 5) {
+        document.getElementById('recommendationsContainer').innerHTML = `
+            <div class="no-results">
+                <div class="no-results-icon">❌</div>
+                <p><strong>Fluid conductivity too low!</strong><br/>MAESTRO requires minimum 5 µS/cm<br/>Current: ${conductivity} µS/cm</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Get flow range for selected pipe size
+    const sizeRange = flowRanges[parseInt(pipeSize)];
+    if (!sizeRange) {
+        document.getElementById('recommendationsContainer').innerHTML = `
+            <div class="no-results">
+                <div class="no-results-icon">⚠️</div>
+                <p><strong>Invalid pipe size</strong></p>
+            </div>
+        `;
+        return;
+    }
+
+    // Check flow compatibility
+    let flowCompatible = (flowMax <= sizeRange.maxFlow && flowMin >= sizeRange.minFlow);
+    let flowWarning = '';
+    
+    if (flowMax > sizeRange.maxFlow) {
+        flowWarning = `⚠️ Maximum flow (${flowMax} L/min) exceeds pipe capacity (${sizeRange.maxFlow.toFixed(1)} L/min)`;
+        flowCompatible = false;
+    }
+    if (flowMin < sizeRange.minFlow) {
+        flowWarning = `⚠️ Minimum flow (${flowMin} L/min) below pipe minimum (${sizeRange.minFlow.toFixed(1)} L/min)`;
+        flowCompatible = false;
+    }
+
+    // Check temperature compatibility
+    let tempCompatible = (tempMax <= 60);
+    let tempWarning = '';
+    if (tempMax > 60 && tempMax <= 90) {
+        tempWarning = '⚠️ High temperature requires special liners (up to +90°C available)';
+        tempCompatible = true;
+    } else if (tempMax > 90) {
+        tempWarning = '❌ Temperature exceeds MAESTRO specification (+90°C max)';
+        tempCompatible = false;
+    }
+
+    // Check accuracy
+    let accuracyCompatible = (requiredAccuracy >= 0.5);
+    let accuracyWarning = '';
+    if (requiredAccuracy < 0.5) {
+        accuracyWarning = `⚠️ MAESTRO accuracy (±0.5%) may not meet requirement (${requiredAccuracy}%)`;
+    }
+
+    // Score each model
+    let recommendations = [];
+    for (let [modelId, modelData] of Object.entries(maestroDatabase)) {
+        let score = 100;
+        let issues = [];
+
+        // Check flow range
+        if (!flowCompatible) score -= 30;
+        if (flowWarning) issues.push(flowWarning);
+
+        // Check temperature
+        if (tempMax > 90) score -= 50;
+        else if (tempMax > 60) score -= 10;
+        if (tempWarning) issues.push(tempWarning);
+
+        // Check accuracy
+        if (requiredAccuracy < 0.5) score -= 15;
+        if (accuracyWarning) issues.push(accuracyWarning);
+
+        // Check display preference
+        if (displayType !== 'any') {
+            if (displayType === 'local' && (modelId === 'ldg-b' || modelId === 'ldg-a')) score -= 20;
+            if (displayType === 'remote' && (modelId === 'ldg-y' || modelId === 'ldg-f')) score -= 10;
+        }
+
+        // Check electrode preference
+        if (electrode !== 'any') {
+            if (!modelData.electrodes.includes(electrode === 'ss316l' ? 'SS316L' : electrode === 'tantalum' ? 'Tantalum' : 'Hastelloy')) {
+                score -= 5;
+            }
+        }
+
+        recommendations.push({
+            id: modelId,
+            ...modelData,
+            score: score,
+            flowRange: sizeRange,
+            compatible: flowCompatible && tempCompatible,
+            issues: issues
+        });
+    }
+
+    // Sort by score (highest first)
+    recommendations.sort((a, b) => b.score - a.score);
+
+    // Render recommendations
+    let html = '';
+    if (recommendations.some(r => r.compatible)) {
+        recommendations.forEach(rec => {
+            const isRecommended = rec.compatible;
+            html += `
+                <div class="recommendation-item ${isRecommended ? 'recommended' : ''}">
+                    <div class="recommendation-header">
+                        <h4>${rec.name} - ${rec.type}</h4>
+                        ${isRecommended ? '<span class="badge badge-success">✓ RECOMMENDED</span>' : 
+                          rec.score >= 70 ? '<span class="badge badge-warning">⚠ Suitable</span>' : 
+                          '<span class="badge badge-danger">✗ Not Suitable</span>'}
+                    </div>
+                    <p style="margin: 8px 0; color: #666; font-size: 13px;">${rec.description}</p>
+                    
+                    <div class="tech-specs">
+                        <div class="tech-spec">
+                            <div class="tech-spec-label">Accuracy</div>
+                            <div class="tech-spec-value">±${rec.accuracy}% of rate</div>
+                        </div>
+                        <div class="tech-spec">
+                            <div class="tech-spec-label">Repeatability</div>
+                            <div class="tech-spec-value">±${rec.repeatability}%</div>
+                        </div>
+                        <div class="tech-spec">
+                            <div class="tech-spec-label">This Pipe Range</div>
+                            <div class="tech-spec-value">${rec.flowRange.minFlow.toFixed(1)} - ${rec.flowRange.maxFlow.toFixed(1)} L/min</div>
+                        </div>
+                        <div class="tech-spec">
+                            <div class="tech-spec-label">Temperature</div>
+                            <div class="tech-spec-value">${rec.tempMin}°C to ${rec.tempMax}°C</div>
+                        </div>
+                    </div>
+
+                    <div class="compatibility">
+                        <strong style="color: #555; font-size: 12px;">Compatibility Check:</strong>
+                        <div class="compatibility-item">
+                            <span class="compatibility-icon ${flowCompatible ? 'ok' : 'error'}">
+                                ${flowCompatible ? '✓' : '✗'}
+                            </span>
+                            <span><strong>Flow Range:</strong> ${flowMin}-${flowMax} L/min 
+                            ${flowCompatible ? '✓ OK' : '✗ OUT OF RANGE'}</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <span class="compatibility-icon ${tempMax <= 90 ? 'ok' : 'error'}">
+                                ${tempMax <= 90 ? '✓' : '✗'}
+                            </span>
+                            <span><strong>Temperature:</strong> ${tempMin}-${tempMax}°C 
+                            ${tempMax <= 60 ? '✓ Standard' : tempMax <= 90 ? '⚠ Special' : '✗ Too High'}</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <span class="compatibility-icon ${conductivity >= 5 ? 'ok' : 'error'}">
+                                ${conductivity >= 5 ? '✓' : '✗'}
+                            </span>
+                            <span><strong>Conductivity:</strong> ${conductivity} µS/cm 
+                            ${conductivity >= 5 ? '✓ OK' : '✗ Too Low'}</span>
+                        </div>
+                        <div class="compatibility-item">
+                            <span class="compatibility-icon ${requiredAccuracy >= 0.5 ? 'ok' : 'warning'}">
+                                ${requiredAccuracy >= 0.5 ? '✓' : '⚠'}
+                            </span>
+                            <span><strong>Accuracy:</strong> Required ${requiredAccuracy}% 
+                            ${requiredAccuracy >= 0.5 ? '✓ Met' : '⚠ Borderline'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        html = `
+            <div class="no-results">
+                <div class="no-results-icon">❌</div>
+                <p><strong>No suitable meters found</strong></p>
+                <p style="font-size: 13px; margin-top: 10px;">Please check:<br/>
+                • Flow rate within range for selected diameter<br/>
+                • Temperature within specifications<br/>
+                • Fluid conductivity ≥ 5 µS/cm</p>
+            </div>
+        `;
+    }
+
+    document.getElementById('recommendationsContainer').innerHTML = html;
+    populateComparisonTable();
+}
+
+function populateComparisonTable() {
+    let html = '';
+    for (let [modelId, modelData] of Object.entries(maestroDatabase)) {
+        html += `
+            <tr>
+                <td><strong>${modelData.name}</strong></td>
+                <td>${modelData.type}</td>
+                <td>${modelData.display}</td>
+                <td>10 - 300 mm</td>
+                <td>${modelData.velocityMin} - ${modelData.velocityMax} m/s</td>
+                <td>±${modelData.accuracy}% of rate</td>
+                <td>${modelData.tempMin}°C to +${modelData.tempMax}°C</td>
+                <td>${modelData.features.join(', ')}</td>
+            </tr>
+        `;
+    }
+    document.getElementById('comparisonBody').innerHTML = html;
+}
+
+function resetForm() {
+    document.getElementById('appName').value = '';
+    document.getElementById('appType').value = '';
+    document.getElementById('pipeSize').value = '';
+    document.getElementById('flowMin').value = '10';
+    document.getElementById('flowNormal').value = '100';
+    document.getElementById('flowMax').value = '200';
+    document.getElementById('tempMin').value = '0';
+    document.getElementById('tempMax').value = '50';
+    document.getElementById('pressureMin').value = '0';
+    document.getElementById('pressureMax').value = '10';
+    document.getElementById('fluidType').value = 'water';
+    document.getElementById('conductivity').value = '1000';
+    document.getElementById('requiredAccuracy').value = '2.0';
+    document.getElementById('displayType').value = 'any';
+    document.getElementById('electrode').value = 'any';
+
+    document.getElementById('recommendationsContainer').innerHTML = `
+        <div class="no-results">
+            <div class="no-results-icon">📊</div>
+            <p><strong>Enter requirements and click "Find Best Match"</strong> to see recommendations</p>
+        </div>
+    `;
+
+    populateComparisonTable();
+}
+
+// Initialize on load
+window.addEventListener('load', function() {
+    populateComparisonTable();
+});
+</script>
+
+</body>
+</html>
